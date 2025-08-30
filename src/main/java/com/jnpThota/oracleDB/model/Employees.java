@@ -79,8 +79,6 @@
 //}
 
 //updated for jenkins test
-//nothing
-
 package com.jnpThota.oracleDB.model;
 
 import java.math.BigDecimal;
