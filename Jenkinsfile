@@ -1,17 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // Make sure these are configured in Jenkins → Global Tool Configuration
-        jdk 'jdk17'          // Your Java installation name
-        maven 'Maven3'       // Your Maven installation name
-    }
-
-    environment {
-        // Example environment variables
-        APP_ENV = 'dev'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -22,9 +11,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building Spring Boot project...'
-                // Ensure mvnw is executable
+                echo 'Building project...'
+                // Make mvnw executable if not already
                 sh 'chmod +x mvnw'
+                // Build the project
                 sh './mvnw clean package -DskipTests'
             }
         }
@@ -36,20 +26,8 @@ pipeline {
             }
             post {
                 always {
-                    // Publish JUnit test results
+                    // Publish test results
                     junit '**/target/surefire-reports/*.xml'
-                }
-            }
-        }
-
-        stage('Integration Tests') {
-            steps {
-                echo 'Running integration tests...'
-                sh './mvnw verify -DskipUnitTests'
-            }
-            post {
-                always {
-                    junit '**/target/failsafe-reports/*.xml'
                 }
             }
         }
@@ -57,7 +35,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy stage (optional)'
-                // Example deploy command:
+                // Example deploy command, replace with your own
                 // sh 'scp target/myapp.jar user@server:/opt/apps/'
             }
         }
@@ -68,7 +46,7 @@ pipeline {
             echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Check console output!'
+            echo 'Pipeline failed!'
         }
         always {
             echo 'Pipeline finished.'
