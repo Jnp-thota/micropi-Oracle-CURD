@@ -78,6 +78,7 @@
 //    }
 //}
 
+//updated for jenkins test
 
 package com.jnpThota.oracleDB.model;
 
@@ -97,7 +98,8 @@ public class Employees {
     }
 
     // Parameterized constructor
-    public Employees(Long empId, String empName, String department, Integer age, Integer experience, BigDecimal salary) {
+    public Employees(Long empId, String empName, String department, Integer age, Integer experience,
+            BigDecimal salary) {
         this.empId = empId;
         this.empName = empName;
         this.department = department;
@@ -167,4 +169,3 @@ public class Employees {
                 '}';
     }
 }
-
