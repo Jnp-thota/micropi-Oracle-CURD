@@ -1,15 +1,31 @@
 pipeline {
     agent any
+
     stages {
-        stage('Checkout') {
+        stage ('Compile Stage') {
+
             steps {
-                git url: 'git@github.com:<username>/<repo>.git', credentialsId: 'github-ssh'
+                withMaven(maven : 'maven_3_5_0') {
+                    sh 'mvn clean compile'
+                }
             }
         }
-        stage('Build') {
+
+        stage ('Testing Stage') {
+
             steps {
-                sh 'echo Building...'
-                # sh 'mvn clean install'  # your real build command
+                withMaven(maven : 'maven_3_5_0') {
+                    sh 'mvn test'
+                }
+            }
+        }
+
+
+        stage ('Deployment Stage') {
+            steps {
+                withMaven(maven : 'maven_3_5_0') {
+                    sh 'mvn deploy'
+                }
             }
         }
     }
