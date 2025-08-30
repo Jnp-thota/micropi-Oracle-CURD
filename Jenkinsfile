@@ -13,9 +13,9 @@ pipeline {
             steps {
                 echo 'Building project...'
                 // Make mvnw executable if not already
-                sh 'chmod +x mvnw'
+                //sh 'chmod +x mvnw'
                 // Build the project
-                sh './mvnw clean package -DskipTests'
+                //sh './mvnw clean package -DskipTests'
             }
         }
 
