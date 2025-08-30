@@ -12,31 +12,37 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building project...'
-                // Make mvnw executable if not already
-                //sh 'chmod +x mvnw'
-                // Build the project
-                //sh './mvnw clean package -DskipTests'
+                // Uncomment when ready:
+                // sh 'chmod +x mvnw'
+                // sh './mvnw clean package -DskipTests'
             }
         }
 
         stage('Unit Tests') {
             steps {
                 echo 'Running unit tests...'
-                //sh './mvnw test'
+                // Uncomment when ready:
+                // sh './mvnw test'
             }
             post {
                 always {
-                    // Publish test results
-                    //junit '**/target/surefire-reports/*.xml'
-                    echo "test completed"
+                    echo 'Unit tests completed'
+                    // junit '**/target/surefire-reports/*.xml'  // enable when Maven tests run
                 }
+            }
+        }
+
+        stage('Approval') {
+            steps {
+                // Wait for manual approval before Deploy
+                input message: "Build and tests passed. Approve to deploy?", ok: "Approve"
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploy stage (optional)'
-                // Example deploy command, replace with your own
+                echo 'Deploy stage (manual approval done)'
+                // Example deploy command:
                 // sh 'scp target/myapp.jar user@server:/opt/apps/'
             }
         }
