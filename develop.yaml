@@ -11,7 +11,7 @@ kind: Deployment
 metadata:
   name: micropi-oracle-crud-deployment
 spec:
-  replicas: 3   # run 3 containers (pods)
+  replicas: 30   # run 3 containers (pods)
   selector:
     matchLabels:
       app: micropi-oracle-crud

@@ -32,3 +32,30 @@ spec:
     - protocol: TCP
       port: 80        # exposed port externally
       targetPort: 8080  # container port
+
+
+
+
+#kubectl create namespace argocd
+#kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+#kubectl get pods -n argocd -- status of argocd pod
+#kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d. --> to get the default password
+
+# kubectl port-forward svc/argocd-server -n argocd 8089:443
+# argocd login localhost:8089 --username admin --password <your-password> --insecure -- need to login to work the below command (git)
+
+
+# argocd app create micropi-oracle-crud \
+#   --repo https://github.com/Jnp-thota/micropi-Oracle-CURD.git \
+#   --path . \
+#   --dest-server https://kubernetes.default.svc \
+#   --dest-namespace default \
+#   --revision main
+
+
+#argocd app sync micropi-oracle-crud
+#argocd app get micropi-oracle-crud
+#minikube service micropi-oracle-crud-service
+
+
+
