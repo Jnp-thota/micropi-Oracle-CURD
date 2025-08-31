@@ -20,18 +20,18 @@
 #kubectl get svc - get the status
 
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: micropi-oracle-crud-service
-spec:
-  type: LoadBalancer
-  selector:
-    app: micropi-oracle-crud
-  ports:
-    - protocol: TCP
-      port: 80        # exposed port externally
-      targetPort: 8080  # container port
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: micropi-oracle-crud-service
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: micropi-oracle-crud
+#   ports:
+#     - protocol: TCP
+#       port: 80        # exposed port externally
+#       targetPort: 8080  # container port
 
 
 
