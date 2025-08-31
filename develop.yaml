@@ -1,3 +1,11 @@
+
+# minikube start
+# kubectl delete pods --all 
+# minikube image load microapi-oracle-crud:latest -- for local
+# kubectl get pods
+
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,7 +21,7 @@ spec:
         app: micropi-oracle-crud
     spec:
       containers:
-      - name: micropi-oracle-crud
-        image: microapi-oracle-crud:latest
+      - name: micropi-worker-operations
+        image: microapi-worker-operations:v1.0.0
         ports:
         - containerPort: 8080

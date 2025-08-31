@@ -1,13 +1,34 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: micropi-oracle-crud-service
+# spec:
+#   type: NodePort          # <- use NodePort for local testing
+#   selector:
+#     app: micropi-oracle-crud
+#   ports:
+#     - protocol: TCP
+#       port: 8080          # external port to access
+#       targetPort: 8080    # container port
+#       nodePort: 30080     # static NodePort (optional)
+
+
+# kubectl apply -f service.yaml
+#kubectl get svc micropi-oracle-crud-service
+
+#minikube tunnel -- to run the load balancer
+#kubectl get svc - get the status
+
+
 apiVersion: v1
 kind: Service
 metadata:
   name: micropi-oracle-crud-service
 spec:
-  type: NodePort          # <- use NodePort for local testing
+  type: LoadBalancer
   selector:
     app: micropi-oracle-crud
   ports:
     - protocol: TCP
-      port: 8080          # external port to access
-      targetPort: 8080    # container port
-      nodePort: 30080     # static NodePort (optional)
+      port: 80        # exposed port externally
+      targetPort: 8080  # container port
