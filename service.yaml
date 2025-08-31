@@ -67,43 +67,44 @@
 # minikube image load microapi-oracle-crud:latest -- for local
 # kubectl get pods
 
----
+# ---
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: micropi-oracle-crud-deployment
-spec:
-  replicas: 10   # run 3 containers (pods)
-  selector:
-    matchLabels:
-      app: micropi-oracle-crud
-  template:
-    metadata:
-      labels:
-        app: micropi-oracle-crud
-    spec:
-      containers:
-      - name: micropi-worker-operations
-        image: microapi-worker-operations:v1.0.0
-        ports:
-        - containerPort: 8080
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: micropi-oracle-crud-deployment
+# spec:
+#   replicas: 10   # run 3 containers (pods)
+#   selector:
+#     matchLabels:
+#       app: micropi-oracle-crud
+#   template:
+#     metadata:
+#       labels:
+#         app: micropi-oracle-crud
+#     spec:
+#       containers:
+#       - name: micropi-worker-operations
+#         image: microapi-worker-operations:v1.0.0
+#         ports:
+#         - containerPort: 8080
 
 
----
+# ---
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: micropi-oracle-crud-service
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: micropi-oracle-crud
+#   ports:
+#     - protocol: TCP
+#       port: 80        # exposed port externally
+#       targetPort: 8080  # container port
+
+# ---
 
 apiVersion: v1
-kind: Service
-metadata:
-  name: micropi-oracle-crud-service
-spec:
-  type: LoadBalancer
-  selector:
-    app: micropi-oracle-crud
-  ports:
-    - protocol: TCP
-      port: 80        # exposed port externally
-      targetPort: 8080  # container port
-
----
-
