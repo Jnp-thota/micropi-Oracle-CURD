@@ -39,7 +39,7 @@
 #kubectl create namespace argocd
 #kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 #kubectl get pods -n argocd -- status of argocd pod
-#kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d. --> to get the default password
+#kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d --> to get the default password
 
 # kubectl port-forward svc/argocd-server -n argocd 8089:443
 # argocd login localhost:8089 --username admin --password <your-password> --insecure -- need to login to work the below command (git)
@@ -58,4 +58,52 @@
 #minikube service micropi-oracle-crud-service
 
 
+
+
+
+
+# minikube start
+# kubectl delete pods --all 
+# minikube image load microapi-oracle-crud:latest -- for local
+# kubectl get pods
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micropi-oracle-crud-deployment
+spec:
+  replicas: 10   # run 3 containers (pods)
+  selector:
+    matchLabels:
+      app: micropi-oracle-crud
+  template:
+    metadata:
+      labels:
+        app: micropi-oracle-crud
+    spec:
+      containers:
+      - name: micropi-worker-operations
+        image: microapi-worker-operations:v1.0.0
+        ports:
+        - containerPort: 8080
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: micropi-oracle-crud-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: micropi-oracle-crud
+  ports:
+    - protocol: TCP
+      port: 80        # exposed port externally
+      targetPort: 8080  # container port
+
+---
 
