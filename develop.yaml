@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micropi-oracle-crud-deployment
+spec:
+  replicas: 3   # run 3 containers (pods)
+  selector:
+    matchLabels:
+      app: micropi-oracle-crud
+  template:
+    metadata:
+      labels:
+        app: micropi-oracle-crud
+    spec:
+      containers:
+      - name: micropi-oracle-crud
+        image: microapi-oracle-crud:latest
+        ports:
+        - containerPort: 8080
