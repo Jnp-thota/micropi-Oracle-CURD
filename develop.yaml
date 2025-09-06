@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: micropi-worker-operations
-          image: microapi-worker-operations:v1.0.0
+          image: microapi-worker-operations:v1.0.1
           ports:
             - containerPort: 8080
 
