@@ -1,3 +1,7 @@
+// docker run -d --name jenkins \
+//   -p 9080:8080 -p 50000:50000 \
+//   jenkins/jenkins:lts
+
 pipeline {
     agent any
 
