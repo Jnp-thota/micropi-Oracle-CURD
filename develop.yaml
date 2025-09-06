@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: micropi-oracle-crud-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: micropi-oracle-crud
