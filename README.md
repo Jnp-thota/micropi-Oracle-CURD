@@ -1,1 +1,37 @@
 # micropi-Oracle-CURD
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micropi-oracle-crud-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micropi-oracle-crud
+  template:
+    metadata:
+      labels:
+        app: micropi-oracle-crud
+    spec:
+      containers:
+        - name: micropi-worker-operations
+          image: microapi-worker-operations:v1.1.0
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micropi-oracle-crud-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: micropi-oracle-crud
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
