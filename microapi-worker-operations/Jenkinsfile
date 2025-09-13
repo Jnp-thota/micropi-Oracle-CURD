@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Replace with the ID of your Jenkins secret text credential (PAT)
-        GITHUB_TOKEN_CRED = 'github-https-token'
+        GITHUB_TOKEN = credentials('github-https-token') // Your GitHub PAT
     }
 
     stages {
@@ -16,59 +15,49 @@ pipeline {
 
         stage('Build') {
             steps {
-                withCredentials([string(credentialsId: "${GITHUB_TOKEN_CRED}", variable: 'GITHUB_TOKEN')]) {
-                    sh '''
-                    curl -H "Authorization: token $GITHUB_TOKEN" \
-                         -X POST \
-                         -d '{"state":"pending","context":"Build"}' \
-                         https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
-                    '''
-                }
-
+                // Mark build pending
+                sh """
+                curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                     -X POST \
+                     -d '{"state":"pending","context":"Build"}' \
+                     https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
+                """
                 echo 'Building project...'
-                // Example real build commands:
+                // Example build commands
                 // sh 'chmod +x mvnw'
                 // sh './mvnw clean package -DskipTests'
-
-                withCredentials([string(credentialsId: "${GITHUB_TOKEN_CRED}", variable: 'GITHUB_TOKEN')]) {
-                    sh '''
-                    curl -H "Authorization: token $GITHUB_TOKEN" \
-                         -X POST \
-                         -d '{"state":"success","context":"Build"}' \
-                         https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
-                    '''
-                }
+                // Mark build success
+                sh """
+                curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                     -X POST \
+                     -d '{"state":"success","context":"Build"}' \
+                     https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
+                """
             }
         }
 
         stage('Unit Tests') {
             steps {
-                withCredentials([string(credentialsId: "${GITHUB_TOKEN_CRED}", variable: 'GITHUB_TOKEN')]) {
-                    sh '''
-                    curl -H "Authorization: token $GITHUB_TOKEN" \
-                         -X POST \
-                         -d '{"state":"pending","context":"Tests"}' \
-                         https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
-                    '''
-                }
-
+                // Mark tests pending
+                sh """
+                curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                     -X POST \
+                     -d '{"state":"pending","context":"Tests"}' \
+                     https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
+                """
                 echo 'Running unit tests...'
-                // Example real tests:
                 // sh './mvnw test'
-
-                withCredentials([string(credentialsId: "${GITHUB_TOKEN_CRED}", variable: 'GITHUB_TOKEN')]) {
-                    sh '''
-                    curl -H "Authorization: token $GITHUB_TOKEN" \
-                         -X POST \
-                         -d '{"state":"success","context":"Tests"}' \
-                         https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
-                    '''
-                }
+                // Mark tests success
+                sh """
+                curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                     -X POST \
+                     -d '{"state":"success","context":"Tests"}' \
+                     https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
+                """
             }
             post {
                 always {
                     echo 'Unit tests completed'
-                    // Optionally include JUnit reports
                     // junit '**/target/surefire-reports/*.xml'
                 }
             }
@@ -83,7 +72,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy stage (manual approval done)'
-                // Example deploy:
                 // sh 'scp target/myapp.jar user@server:/opt/apps/'
             }
         }
@@ -91,24 +79,20 @@ pipeline {
 
     post {
         success {
-            withCredentials([string(credentialsId: "${GITHUB_TOKEN_CRED}", variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                curl -H "Authorization: token $GITHUB_TOKEN" \
-                     -X POST \
-                     -d '{"state":"success","context":"CI Pipeline"}' \
-                     https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
-                '''
-            }
+            sh """
+            curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                 -X POST \
+                 -d '{"state":"success","context":"CI Pipeline"}' \
+                 https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
+            """
         }
         failure {
-            withCredentials([string(credentialsId: "${GITHUB_TOKEN_CRED}", variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                curl -H "Authorization: token $GITHUB_TOKEN" \
-                     -X POST \
-                     -d '{"state":"failure","context":"CI Pipeline"}' \
-                     https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
-                '''
-            }
+            sh """
+            curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                 -X POST \
+                 -d '{"state":"failure","context":"CI Pipeline"}' \
+                 https://api.github.com/repos/Jnp-thota/micropi-Oracle-CURD/statuses/${GIT_COMMIT}
+            """
         }
     }
 }
