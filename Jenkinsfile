@@ -18,12 +18,14 @@ pipeline {
         }
         stage('Docker Build & Push') {
             steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                 sh """
                    docker build -t $ECR_REPO:$IMAGE_TAG .
                    aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
                    docker push $ECR_REPO:$IMAGE_TAG
                 """
             }
+        }
         }
         stage('Deploy to EKS') {
             steps {
