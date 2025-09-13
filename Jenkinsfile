@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-username/your-repo.git', credentialsId: 'github-pat-id'
+                git branch: 'main', url: 'https://github.com/Jnp-thota/micropi-Oracle-CURD.git', credentialsId: 'github-https-token'
             }
         }
         stage('Build') {

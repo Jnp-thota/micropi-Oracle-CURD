@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: microservice
-        image: <ECR_REPO_URI>:v1
+        image: 061039759557.dkr.ecr.us-east-1.amazonaws.com/microservice-operations:v1
         ports:
         - containerPort: 8080
